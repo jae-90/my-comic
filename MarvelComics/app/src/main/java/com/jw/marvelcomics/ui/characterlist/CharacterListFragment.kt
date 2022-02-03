@@ -83,7 +83,7 @@ class CharacterListFragment : Fragment() {
     }
 
     private fun requestCharacterCollectionDataResponse() {
-        args.characterUrl?.let {
+        args.characterUrl.let {
             viewModel.getCharactersCollectionResponse(it)
         }
     }

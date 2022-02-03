@@ -40,9 +40,7 @@
             app:popUpToSaveState="true"/>
         <argument
             android:name="characterUrl"
-            app:argType="string"
-            app:nullable="true"
-            android:defaultValue='""' />
+            app:argType="string" />
     </fragment>
 
     <fragment
@@ -56,8 +54,6 @@
         app:exitAnim="@anim/fade_out">
         <argument
             android:name="character"
-            app:argType="com.jw.marvelcomics.repository.api.model.Character"
-            app:nullable="true"
-            android:defaultValue="@null" />
+            app:argType="com.jw.marvelcomics.repository.api.model.Character" />
     </fragment>
 </navigation>

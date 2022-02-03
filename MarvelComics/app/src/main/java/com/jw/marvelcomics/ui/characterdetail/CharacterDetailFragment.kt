@@ -30,7 +30,7 @@ class CharacterDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        args.character?.let { character ->
+        args.character.let { character ->
             character.thumbnail.getUrl().let { binding.characterDetailImage.setImage(it) }
             binding.characterDetailName.text = args.character?.name
         }
