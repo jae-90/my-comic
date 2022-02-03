@@ -5,65 +5,64 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.jw.marvelcomics.R
 import com.jw.marvelcomics.databinding.FragmentCharacterListBinding
 import com.jw.marvelcomics.repository.api.model.Character
 import com.jw.marvelcomics.util.DataState
 import com.jw.marvelcomics.viewmodel.CharacterListViewModel
-import com.jw.marvelcomics.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class CharacterListFragment : Fragment() {
 
-    private val mainViewModel: MainViewModel by activityViewModels()
     private val viewModel: CharacterListViewModel by viewModels()
+    private val args by navArgs<CharacterListFragmentArgs>()
 
-    private lateinit var binding: FragmentCharacterListBinding
     private lateinit var characterListAdapter: CharacterListAdapter
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        viewModel.getCharactersCollectionResponse(mainViewModel.charactersUrl)
-        characterListAdapter = CharacterListAdapter(
-            mutableListOf(),
-            object : CharacterListAdapter.OnItemClickedListener {
-                override fun onItemSelected(position: Int, item: Character) {
-                    mainViewModel.character = item
-                    val action =
-                        CharacterListFragmentDirections
-                            .actionCharacterListFragmentToCharacterDetailFragment()
-                    view?.findNavController()?.navigate(action)
-                }
-            }
-        )
-    }
+    private var _binding: FragmentCharacterListBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(inflater,
-            R.layout.fragment_character_list, container, false)
+        _binding = FragmentCharacterListBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupRecyclerView()
+
+        observeCharacterCollectionDataResponse()
+        requestCharacterCollectionDataResponse()
+    }
+
+    private fun setupRecyclerView() {
+        characterListAdapter = CharacterListAdapter(
+            mutableListOf(),
+            object : CharacterListAdapter.OnItemClickedListener {
+                override fun onItemSelected(position: Int, item: Character) {
+                    val action =
+                        CharacterListFragmentDirections
+                            .actionCharacterListFragmentToCharacterDetailFragment(item)
+                    view?.findNavController()?.navigate(action)
+                }
+            }
+        )
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = characterListAdapter
         }
+    }
 
+    private fun observeCharacterCollectionDataResponse() {
         viewModel.charactersCollectionData.observe(viewLifecycleOwner) { dataState ->
             when (dataState) {
                 is DataState.Loading -> {
@@ -76,11 +75,22 @@ class CharacterListFragment : Fragment() {
                 }
                 is DataState.Error -> {
                     // handle errors
-                    // network availability, exceptions, etc
+                    // network availability, custom exceptions, etc
                     Log.e(TAG, "----> Error: ${dataState.exception.message}")
                 }
             }
         }
+    }
+
+    private fun requestCharacterCollectionDataResponse() {
+        args.characterUrl?.let {
+            viewModel.getCharactersCollectionResponse(it)
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {

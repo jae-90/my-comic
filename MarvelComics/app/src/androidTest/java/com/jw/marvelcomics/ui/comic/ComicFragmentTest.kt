@@ -24,7 +24,7 @@ class ComicFragmentTest {
     }
 
     @Test
-    fun whenDisplayed_comicInfoFromRepoIsDisplayed() {
+    fun whenDisplayed_comicInfoIsDisplayed() {
         launchFragmentInHiltContainer<ComicFragment>()
 
         onView(allOf(withId(R.id.comic_title), isDisplayed()))

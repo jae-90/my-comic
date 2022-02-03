@@ -47,7 +47,7 @@ class ComicRepositoryImplTest {
         val comicDataState = comicRepository.getComic(SPIDER_MAN_COMIC_BOOK_ID)
             .drop(1).first()
 
-        assertEquals((comicDataState as DataState.Success).data.data.results?.size, 0)
+        assertEquals((comicDataState as DataState.Success).data.data.results.size, 0)
     }
 
     @Test

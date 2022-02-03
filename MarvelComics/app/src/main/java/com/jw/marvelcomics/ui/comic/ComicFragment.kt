@@ -6,48 +6,54 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
-import com.jw.marvelcomics.R
 import com.jw.marvelcomics.databinding.FragmentComicBinding
 import com.jw.marvelcomics.util.Constants.SPIDER_MAN_COMIC_BOOK_ID
 import com.jw.marvelcomics.util.DataState
 import com.jw.marvelcomics.util.convertToHttpsUriString
 import com.jw.marvelcomics.util.setImage
 import com.jw.marvelcomics.viewmodel.ComicViewModel
-import com.jw.marvelcomics.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ComicFragment : Fragment() {
 
-    private val mainViewModel: MainViewModel by activityViewModels()
     private val viewModel: ComicViewModel by viewModels()
+    private lateinit var characterUrl: String
 
-    private lateinit var binding: FragmentComicBinding
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        viewModel.getComicResponse(SPIDER_MAN_COMIC_BOOK_ID)
-    }
+    private var _binding: FragmentComicBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(inflater,
-            R.layout.fragment_comic, container, false)
+        _binding = FragmentComicBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        observeComicResponse()
+        requestComicResponse()
+        setupFabOnClickListener(view)
+    }
+
+    private fun setupFabOnClickListener(view: View) {
+        binding.fab.setOnClickListener {
+            if (::characterUrl.isInitialized) {
+                val action = ComicFragmentDirections
+                    .actionComicFragmentToCharacterListFragment(characterUrl)
+                view.findNavController().navigate(action)
+            }
+        }
+    }
+
+    private fun observeComicResponse() {
         viewModel.comicResponse.observe(viewLifecycleOwner) { dataState ->
             when (dataState) {
                 is DataState.Loading -> {
@@ -64,26 +70,25 @@ class ComicFragment : Fragment() {
                             response.data.results[0].textObjects[0].text, Html.FROM_HTML_MODE_COMPACT
                         )
 
-                    mainViewModel.charactersUrl =
+                    characterUrl =
                         response.data.results[0].characters.collectionURI.convertToHttpsUriString()
                 }
                 is DataState.Error -> {
                     // handle errors
-                    // network availability, exceptions, etc
+                    // network availability, custom exceptions, etc
                     Log.e(TAG, "----> Error: ${dataState.exception.message}")
                 }
             }
         }
+    }
 
-        binding.fab.setOnClickListener {
-            if (mainViewModel.charactersUrl.isEmpty()) {
-                Log.d(TAG, "----> Character fetch url is empty")
-            } else {
-                val action = ComicFragmentDirections
-                    .actionComicFragmentToCharacterListFragment()
-                view.findNavController().navigate(action)
-            }
-        }
+    private fun requestComicResponse() {
+        viewModel.getComicResponse(SPIDER_MAN_COMIC_BOOK_ID)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {

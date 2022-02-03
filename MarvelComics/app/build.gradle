@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-kapt'
     id 'androidx.navigation.safeargs.kotlin'
     id 'dagger.hilt.android.plugin'
+    id 'kotlin-parcelize'
 }
 
 def apikeyPropertiesFile = rootProject.file("apikey.properties")
@@ -44,7 +45,7 @@ android {
     }
 
     buildFeatures {
-        dataBinding true
+        viewBinding true
     }
 }
 

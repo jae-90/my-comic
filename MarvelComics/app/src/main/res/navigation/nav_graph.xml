@@ -38,6 +38,11 @@
             app:restoreState="true"
             app:popUpTo="@id/characterListFragment"
             app:popUpToSaveState="true"/>
+        <argument
+            android:name="characterUrl"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue='""' />
     </fragment>
 
     <fragment
@@ -49,5 +54,10 @@
         app:popExitAnim="@anim/fade_out"
         app:enterAnim="@anim/fade_in"
         app:exitAnim="@anim/fade_out">
+        <argument
+            android:name="character"
+            app:argType="com.jw.marvelcomics.repository.api.model.Character"
+            app:nullable="true"
+            android:defaultValue="@null" />
     </fragment>
 </navigation>

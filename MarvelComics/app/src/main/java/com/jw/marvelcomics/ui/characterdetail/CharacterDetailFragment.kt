@@ -4,39 +4,41 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
-import com.jw.marvelcomics.R
+import androidx.navigation.fragment.navArgs
 import com.jw.marvelcomics.databinding.FragmentCharacterDetailBinding
 import com.jw.marvelcomics.util.setImage
-import com.jw.marvelcomics.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class CharacterDetailFragment : Fragment() {
 
-    private val mainViewModel: MainViewModel by activityViewModels()
+    private val args by navArgs<CharacterDetailFragmentArgs>()
 
-    private lateinit var binding: FragmentCharacterDetailBinding
+    private var _binding: FragmentCharacterDetailBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(inflater,
-            R.layout.fragment_character_detail, container, false)
+        _binding = FragmentCharacterDetailBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mainViewModel.character?.thumbnail?.getUrl()
-            ?.let { binding.characterDetailImage.setImage(it) }
+        args.character?.let { character ->
+            character.thumbnail.getUrl().let { binding.characterDetailImage.setImage(it) }
+            binding.characterDetailName.text = args.character?.name
+        }
+    }
 
-        binding.characterDetailName.text = mainViewModel.character?.name
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {
