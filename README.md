@@ -40,9 +40,20 @@
 ### Requirement
 
 - In order to use the api-keys, `apikey.properties` file is necessary with keys of:
-API_KEY_PUBLIC = "xxxxx"
-API_KEY_PRIVATE = "xxxxx"
+> API_KEY_PUBLIC = "xxxxx"
+> API_KEY_PRIVATE = "xxxxx"
 - Put necessary values and add the file into the root of the project.
+
+
+---
+
+### Need improvements on
+
+- Data model mapping/cleanup.
+- Other network interceptors (429, 503, etc) for better network error handling.
+- Custom exception for better exception handling at error datastate.
+- DB/caching functionality.
+- DataBinding for better view - data communication.
 
 
 ---
