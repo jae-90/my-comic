@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/comicFragment">
+
+    <fragment
+        android:id="@+id/comicFragment"
+        android:name="com.jw.marvelcomics.ui.comic.ComicFragment"
+        android:label="ComicFragment"
+        tools:layout="@layout/fragment_comic">
+        <action
+            android:id="@+id/action_comicFragment_to_characterListFragment"
+            app:destination="@id/characterListFragment"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:restoreState="true"
+            app:popUpTo="@id/comicFragment"
+            app:popUpToSaveState="true">
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/characterListFragment"
+        android:name="com.jw.marvelcomics.ui.characterlist.CharacterListFragment"
+        android:label="CharacterListFragment"
+        tools:layout="@layout/fragment_character_list">
+        <action
+            android:id="@+id/action_characterListFragment_to_characterDetailFragment"
+            app:destination="@id/characterDetailFragment"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:restoreState="true"
+            app:popUpTo="@id/characterListFragment"
+            app:popUpToSaveState="true"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/characterDetailFragment"
+        android:name="com.jw.marvelcomics.ui.characterdetail.CharacterDetailFragment"
+        android:label="CharacterDetailFragment"
+        tools:layout="@layout/fragment_character_detail"
+        app:popEnterAnim="@anim/fade_in"
+        app:popExitAnim="@anim/fade_out"
+        app:enterAnim="@anim/fade_in"
+        app:exitAnim="@anim/fade_out">
+    </fragment>
+</navigation>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="fragment_detail_character_name_font_size">50sp</dimen>
+    <dimen name="fragment_detail_character_name_margin_top_size">20dp</dimen>
+
+    <dimen name="view_character_item_character_image_size">100dp</dimen>
+    <dimen name="view_character_item_character_name_text_size">20sp</dimen>
+    <dimen name="view_character_item_character_name_padding_size">10dp</dimen>
+    <dimen name="view_character_item_cardview_margin">4dp</dimen>
+
+    <dimen name="view_comic_content_comic_title_padding_size">10dp</dimen>
+    <dimen name="view_comic_content_comic_title_text_size">35sp</dimen>
+    <dimen name="view_comic_content_comic_description_padding_size">10dp</dimen>
+    <dimen name="view_comic_content_comic_description_text_size">20sp</dimen>
+    <dimen name="view_comic_content_comic_description_line_spacing_extra_size">5dp</dimen>
+
+    <dimen name="fragment_comic_fab_margin_size">16dp</dimen>
+</resources>

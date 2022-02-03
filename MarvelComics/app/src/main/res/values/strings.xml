@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">MarvelComics</string>
+    <string name="character_image">Character Image</string>
+    <string name="fragment_comic_fab_text">Characters</string>
+    <string name="comic_cover_image">Comic Cover Image</string>
+</resources>
