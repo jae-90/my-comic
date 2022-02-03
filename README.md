@@ -54,6 +54,8 @@
 - Custom exception for better exception handling at error datastate.
 - DB/caching functionality.
 - DataBinding for better view - data communication.
+- More UI/Unit tests.
+- And many more!
 
 
 ---
