@@ -17,7 +17,7 @@
 
 **Demo**
 
-![DEMO GIF](img/my_comic_demo.gif)
+![DEMO GIF](gif/my_comic_demo.gif)
 ---
 
 ## Built with
